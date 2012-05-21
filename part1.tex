@@ -1,0 +1,164 @@
+% file : part1.tex
+% author : mxeis
+% date : Sat 11 Feb 2012 09:07:53 AM UTC
+
+\section{Definitions} % [fold]
+\label{sec:Definitions}
+    Tous les systemes critiques sont des systemes qui attraient aux systemes.
+    Les systemes utilisent de plus en plus de generation de code.
+
+    Un systeme: materiel, logiciel, structure d'acceuil. Un systeme est temps
+    reel si l'ensemble des composants le sont.
+    Surete: capacite a apporter des reponses coherentes en systemes.
+    Notion de maintenabilite.
+    Notion de securite a ne pas confondre avec surete (fonctionnement global).
+    Securite -> au sens informatique.
+    Prise en compte des couts de possesions globales des systemes.
+
+    Comment passer d'une somme de produit a un produit de sommes.
+    SP = PS.
+    y = ABC|D + A|B|CD + A|BD| + AB|C + A|B|C|D
+    Y|= (A| + B| + C + D)(A + B + C| + D|)(A + B| + D)(A| + B + C|)(A + B + C
+    + D|)
+    = A|A + A|B + A|C| + A|D| + B|A + B|B + B|C| + B|D| + ...
+    \textbf{Attention} On doit toujours se ramener a une somme de produit.
+
+    \underline{Karnault}
+	On voit instantanement ce qui depend d'une valeur:
+	on appelle ca le code de gray:
+		AB
+	|--|00|01|11|10
+	|00|  |1 |  |
+    C|D |01|1 |  |  |
+	|11|  |  |1 |
+	|10|  |1 |1 |
+
+    Le xor  -> sert a des inversion controlees.
+	    -> base meme du comparateur.
+	    -> Addition.
+
+
+    table de verite d'un multiplexeur 8 vers 1.
+
+    table de verite d'un encodeur de verite a 8 entree.
+    Cela sert a prioriser les interruptions, les bits de niveaux prioritarise
+    les interruption, permet de les numeroter.
+
+    --- bascules ---
+    sequentiel => gestion du temps => horloge
+    a chaque front montant, on recopie l'entree sur la sortie q.
+    Attention au temps de propagation du systeme.
+    On definit un temps de setup qui est le temps minimum ou la
+    stabilite de l'entree avant le top d'horloge.
+    Il faut garantir la stabilite du systeme pendant un certain temps appele
+    le temps setup thole.
+
+    Tout systeme sequentiel peut se decomposer comme etant une memoire ayant
+    une fonction combinatoire permettant de definir ce dont on a besoin. C'est
+    fonction combinatoire est une somme de produit.
+
+    methode pour coder -5:  0000 0101
+    complement a 1 :	    1111 1010
+    complement a 2 :	    1111 1011
+
+    un demi aditionneur : prend deux bit.
+
+    Qu'es-ce qu'une sortie tri-step
+	La gestion tri set a pour but de gerer des sorties actives a des
+	sorties indifferentes, haute impedance. Cela implique la consomation /
+	generation d'une importante quantite de courant.
+
+    Qu'es-ce qu'une machine moore:
+	machine a etat dont la commutation des etats est relative a la
+	comutatioon des sommes des fonctions des entrees.
+
+	Dans un systeme a etats: il faut identifier les etats, identifier les
+	actions, identifier les actions.
+
+    A quoi sert le compteur ordinal du proc?
+	C'est un pointeur sur le code execute. Il sert est executer le code de
+	maniere sequentielle.
+	Le pointeur ordinal pointe sur toute la memoire, le pointeur
+	d'instruction ne pointe que sur les instruction, l'ordinal pointe sur
+	toute la memoire.
+
+    Une micro-instruction est une instruction atomique.
+	Cela garantie que cette instruction est executee en une seule fois
+	sans etre interrompue. Les micro-insruction composent des instructions
+	elementaire, et elles sont insecables.
+
+    Un sequenceur : sequence -> memoriser et enchainer les etats. travail sur
+    des machines a etats finit.
+
+    Sur les FPGA, les memoire ont 16 adresses sur un bit.
+    Le FPGA etant un composant a base de memoire, il est initialise par a
+    l'aide d'un design stocke en memoire.
+
+    Quelle difference entre logique positive et negative?
+    logique positive -> 1 = vrai, 0 = faux.
+    La logique positive peut entrainer la generation de parasites.
+    logique negative -> 0 = vrai, 1 = faux.
+
+% [end] section Definitions
+
+
+\section{Questions sur les slides} % [fold]
+\label{sec:Questions sur les slides}
+    \subsection{Logique synchrone} % [fold]
+    \label{sub:Logique synchrone}
+	Le temps d'horloge > temps de hold + temps combinatoire + temps set-up
+	La logique combinatoire est tjr asynchrone.
+    % [end] subsection Logique synchrone
+
+    \subsection{Logique asynchrone} % [fold]
+    \label{sub:Logique asynchrone}
+	Quand on est asynchrone, il y a instabilite.
+	Lorsque l'on est asynchrone, la periode peut malgre etout est plus
+	courte que la frequence d'horloge.
+    % [end] subsection Logique asynchrone
+
+    \subsection{La notion d'asservissement} % [fold]
+    \label{sub:La notion d'asservissement}
+	La notion d'asservissement vise a obtenir une stabilite du systeme.
+	Peu importe le fait d'etre synchrone ou asynchrone, cela permet
+	d'obtenir la stabilite.
+	Cette notion est toujours utile.
+	Typiquement un processeur qui veut dialoguer avec une memoire.
+	\begin{itemize}
+	    \item En asynchrone:\\
+	    Le processeur fait une requete a un instant t.
+	    A quel moment sait-il que la donnee est stable? Information de
+	    stabilite donnee par un signal du peripherique (attention !=
+	    interuption). Donc la memoire fourni le ACK au processeur puisque
+	    il est asservi as une reponse du peripherique.
+	    Des qu'on a le ACK, on traite, on enleve les temps intermediaire
+	    au niveau des peripheriques.
+	    Dans le systeme asynchrone, il n'y a plus de notions de
+	    referentiels, plus de relation au top d'horloge.
+	    \item En synchrone:\\
+	    pas forcement besoin du ACK car le temps d'attente est dans le
+	    processeur (connu a l'avance).
+	    Dans le synchrone asservi, instants de references, la requette
+	    sera emise pendant un instant de hold, la memoire la recoi au bout
+	    d'un certain temps. Si on emet un ACK, le ack doit etre emis sur
+	    un top d'horloge et etre stable avant le prochain top d'horloge -
+	    le temps de set-up.
+	\end{itemize}
+    % [end] subsection La notion d'asservissement
+
+    \subsection{Le DMA} % [fold]
+    \label{sub:Le DMA}
+	Le Direct Memory Access: permet a un peripherique d'echanger des
+	donnees via un acces elementaire. Ex: bus de donnees, une memoire ->
+	un proc -> un periph.
+	Un DMA peut fonctionner en Read et en Write. Cela se fait sur le
+	controle du micropros. Notion de delocalisation de l'intelligence dans
+	le periph. afin de faire le transfert de maniere automatique mais sous
+	le controle du proc. Le proc donnee l'adresse memoire de debut, la
+	taille, l'ordre (read/write) et la memoire renvoie une interruption
+	lorsque elle a terminee. Cela permet de gerer les entrees sortie de
+	maniere //. Passage des donnees par petits paquets pour ne pas bloquer
+	le bus.
+    % [end] subsection Le DMA
+
+% [end] section Questions sur les slides
